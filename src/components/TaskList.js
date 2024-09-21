@@ -9,20 +9,19 @@ const TaskList = () => {
     // Sample task data
     { id: 1, name: 'Task 1', assignedTo: 'User 1', status: 'Completed', dueDate: '2024-10-12', priority: 'Low', comments: ['This task is good'] },
     { id: 2, name: 'Task 2', assignedTo: 'User 2', status: 'In Progress', dueDate: '2024-09-14', priority: 'High', comments: ['This task is good'] },
-    { id: 3, name: 'Task 3', assignedTo: 'User 3', status: 'Not Started', dueDate: '2024-08-18', priority: 'Low', comments: ['This task is good'] },
-    { id: 4, name: 'Task 4', assignedTo: 'User 4', status: 'In Progress', dueDate: '2024-06-12', priority: 'Normal', comments: ['This task is good'] },
-    { id: 5, name: 'Task 5', assignedTo: 'User 5', status: 'In Progress', dueDate: '2024-06-15', priority: 'High', comments: ['This task is good'] },
-    { id: 6, name: 'Task 6', assignedTo: 'User 6', status: 'Completed', dueDate: '2024-06-20', priority: 'Low', comments: ['This task is good'] },
-    { id: 7, name: 'Task 7', assignedTo: 'User 7', status: 'Not Started', dueDate: '2024-07-01', priority: 'Normal', comments: ['This task is good'] },
+    { id: 3, name: 'Task 3', assignedTo: 'User 3', status: 'completed', dueDate: '2024-09-11', priority: 'low', comments: ['Good Challenge'] },
+    { id: 4, name: 'Task 4', assignedTo: 'User 4', status: 'In Progress', dueDate: '2024-05-1', priority: 'medium', comments: ['This task is good'] },
+    { id: 5, name: 'Task 5', assignedTo: 'User 5', status: 'completed', dueDate: '2024-03-9', priority: 'High', comments: ['Not bad'] },// More tasks...
   ]);
 
+  const [editTask, setEditTask] = useState(null);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 4; 
+  const itemsPerPage = 4;
   const navigate = useNavigate();
 
-  const handleEdit = (id) => {
-    navigate(`/edit-task/${id}`);
+  const handleEdit = (task) => {
+    setEditTask(task);  // Set the task to be edited
   };
 
   const handleDelete = (id) => {
@@ -36,6 +35,11 @@ const TaskList = () => {
 
   const cancelDelete = () => {
     setDeleteTaskId(null);
+  };
+
+  const updateTask = (updatedTask) => {
+    setTasks(tasks.map(task => task.id === updatedTask.id ? updatedTask : task));
+    setEditTask(null);
   };
 
   const startIndex = currentPage * itemsPerPage;
@@ -80,7 +84,7 @@ const TaskList = () => {
                         {task.comments[0]}
                       </button>
                       <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{ backgroundColor: "#fee396" }}>
-                        <li><button className="dropdown-item" onClick={() => handleEdit(task.id)}>Edit</button></li>
+                        <li><button className="dropdown-item" onClick={() => handleEdit(task)}>Edit</button></li>
                         <li><button className="dropdown-item" onClick={() => handleDelete(task.id)}>Delete</button></li>
                       </ul>
                     </div>
@@ -91,6 +95,14 @@ const TaskList = () => {
           </table>
         </div>
       </div>
+
+      {editTask && (
+        <EditTaskForm 
+          task={editTask} 
+          onSave={updateTask} 
+          onCancel={() => setEditTask(null)} 
+        />
+      )}
 
       {deleteTaskId && (
         <DeleteConfirmation
@@ -106,6 +118,80 @@ const TaskList = () => {
         totalPages={totalPages} 
         onPageChange={setCurrentPage} 
       />
+    </div>
+  );
+};
+
+const EditTaskForm = ({ task, onSave, onCancel }) => {
+  const [editedTask, setEditedTask] = useState({ ...task });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedTask(prevTask => ({ ...prevTask, [name]: value }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    onSave(editedTask);
+  };
+
+  return (
+    <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }} tabIndex="-1" role="dialog">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Edit Task</h5>
+          </div>
+          <div className="modal-body">
+            <form onSubmit={handleSave}>
+              <div className="form-group">
+                <label htmlFor="assignedTo"><b>Assigned To</b></label>
+                <input 
+                  type="text" 
+                  name="assignedTo" 
+                  className="form-control" 
+                  value={editedTask.assignedTo} 
+                  onChange={handleChange} 
+                />
+              </div>
+              <div className="form-group my-3">
+                <label htmlFor="status"><b>Status</b></label>
+                <input 
+                  type="text" 
+                  name="status" 
+                  className="form-control" 
+                  value={editedTask.status} 
+                  onChange={handleChange} 
+                />
+              </div>
+              <div className="form-group my-3">
+                <label htmlFor="dueDate"><b>Due Date</b></label>
+                <input 
+                  type="date" 
+                  name="dueDate" 
+                  className="form-control" 
+                  value={editedTask.dueDate} 
+                  onChange={handleChange} 
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="priority"><b>Priority</b></label>
+                <input 
+                  type="text" 
+                  name="priority" 
+                  className="form-control" 
+                  value={editedTask.priority} 
+                  onChange={handleChange} 
+                />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
