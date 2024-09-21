@@ -4,7 +4,7 @@ import DeleteConfirmation from './DeleteConfirmation';
 import Footer from './Footer';
 import Navbar from './Navbar';
 
-const TaskList = () => {
+const TaskList = ({onAddTAsk}) => {
   const [tasks, setTasks] = useState([
     // Sample task data
     { id: 1, name: 'Task 1', assignedTo: 'User 1', status: 'Completed', dueDate: '2024-10-12', priority: 'Low', comments: ['This task is good'] },
