@@ -1,28 +1,30 @@
-export default function Navbar() {
+import { Link } from "react-router-dom";
+export default function Navbar({totalPages}) {
   return (
     <div>
       <nav className="navbar navbar-light" style={{ backgroundColor: "#dedddc" }}>
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             <img src="to do image.png" alt="" width="30" height="24" className="d-inline-block align-text-top" />
-            Tasks<br />
-            <small>All Tasks</small>
+            Tasks <br/>
+            
+            <small>{totalPages} Records</small>
           </a>
 
           <div className="d-flex flex-column align-items-end">
             {/* First row with joined buttons */}
             <div className="btn-group mb-2" role="group" style={{ backgroundColor: "#fee396" }}>
-              <button
+              <Link
                 className="btn"
-                type="button"
-                style={{ border: "1px solid #fee396", backgroundColor: "#fee396" }}
+                type="button" to="NewForm"
+                style={{ border: "1px solid #FFCC00", backgroundColor: "#fee396" }}
               >
                 New Task
-              </button>
+              </Link>
               <button
                 className="btn"
                 type="button"
-                style={{ border: "1px solid #fee396", backgroundColor: "#fee396" }}
+                style={{ border: "1px solid #FFCC00", backgroundColor: "#fee396" }}
               >
                 Refresh
               </button>

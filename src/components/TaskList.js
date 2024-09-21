@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteConfirmation from './DeleteConfirmation';
+import Footer from './Footer'; // Import Footer
+import Navbar from './Navbar';
 
 const TaskList = () => {
+  
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -39,9 +42,39 @@ const TaskList = () => {
       dueDate: '2024-06-12',
       priority: 'Normal',
       comments: ['This task is good']
+    },
+    {
+      id: 5,
+      name: 'Task 5',
+      assignedTo: 'User 5',
+      status: 'In Progress',
+      dueDate: '2024-06-15',
+      priority: 'High',
+      comments: ['This task is good']
+    },
+    {
+      id: 6,
+      name: 'Task 6',
+      assignedTo: 'User 6',
+      status: 'Completed',
+      dueDate: '2024-06-20',
+      priority: 'Low',
+      comments: ['This task is good']
+    },
+    {
+      id: 7,
+      name: 'Task 7',
+      assignedTo: 'User 7',
+      status: 'Not Started',
+      dueDate: '2024-07-01',
+      priority: 'Normal',
+      comments: ['This task is good']
     }
   ]);
+  
   const [deleteTaskId, setDeleteTaskId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 4; // Number of items per page
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
@@ -61,16 +94,18 @@ const TaskList = () => {
     setDeleteTaskId(null);
   };
 
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTasks = tasks.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(tasks.length / itemsPerPage);
+
   return (
+    
     <div className="container-fluid mt-4">
-      {/* Navbar */}
-      
-
+      <Navbar  totalPages={totalPages} ></Navbar>
+      {/* Task Table Section */}
       <div className="row mt-3">
-        {/* Task Table Section */}
         <div className="col-lg-8">
-          
-
           <table className="table table-striped table-bordered">
             <thead>
               <tr>
@@ -83,7 +118,7 @@ const TaskList = () => {
               </tr>
             </thead>
             <tbody>
-              {tasks.map(task => (
+              {currentTasks.map(task => (
                 <tr key={task.id}>
                   <td><input type="checkbox" /></td>
                   <td>{task.assignedTo}</td>
@@ -101,7 +136,7 @@ const TaskList = () => {
                       >
                         {task.comments[0]}
                       </button>
-                      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{backgroundColor:"#fee396"}}>
+                      <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{ backgroundColor: "#fee396" }}>
                         <li><button className="dropdown-item" onClick={() => handleEdit(task.id)}>Edit</button></li>
                         <li><button className="dropdown-item" onClick={() => handleDelete(task.id)}>Delete</button></li>
                       </ul>
@@ -121,6 +156,13 @@ const TaskList = () => {
           onCancel={cancelDelete}
         />
       )}
+
+      {/* Footer with Pagination */}
+      <Footer 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        onPageChange={setCurrentPage} 
+      />
     </div>
   );
 };

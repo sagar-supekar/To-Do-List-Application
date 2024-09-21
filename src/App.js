@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import NewForm from './components/NewForm';
 
 const App = () => {
   const [tasks, setTasks] = useState([
@@ -14,12 +13,12 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar></Navbar>
       <Routes>
         <Route path="/" element={<TaskList tasks={tasks} setTasks={setTasks} />} />
         <Route path="/edit-task/:id" element={<TaskForm tasks={tasks} setTasks={setTasks} />} />
+        <Route path="TaskForm" element={<TaskForm/>}/>
+        <Route path="NewForm" element={<NewForm/>}/>
       </Routes>
-      <Footer></Footer>
     </Router>
   );
 };
