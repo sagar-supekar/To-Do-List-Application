@@ -1,80 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeleteConfirmation from './DeleteConfirmation';
-import Footer from './Footer'; // Import Footer
+import Footer from './Footer';
 import Navbar from './Navbar';
 
 const TaskList = () => {
-  
   const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      name: 'Task 1',
-      assignedTo: 'User 1',
-      status: 'Completed',
-      dueDate: '2024-10-12',
-      priority: 'Low',
-      comments: ['This task is good']
-    },
-    {
-      id: 2,
-      name: 'Task 2',
-      assignedTo: 'User 2',
-      status: 'In Progress',
-      dueDate: '2024-09-14',
-      priority: 'High',
-      comments: ['This task is good']
-    },
-    {
-      id: 3,
-      name: 'Task 3',
-      assignedTo: 'User 3',
-      status: 'Not Started',
-      dueDate: '2024-08-18',
-      priority: 'Low',
-      comments: ['This task is good']
-    },
-    {
-      id: 4,
-      name: 'Task 4',
-      assignedTo: 'User 4',
-      status: 'In Progress',
-      dueDate: '2024-06-12',
-      priority: 'Normal',
-      comments: ['This task is good']
-    },
-    {
-      id: 5,
-      name: 'Task 5',
-      assignedTo: 'User 5',
-      status: 'In Progress',
-      dueDate: '2024-06-15',
-      priority: 'High',
-      comments: ['This task is good']
-    },
-    {
-      id: 6,
-      name: 'Task 6',
-      assignedTo: 'User 6',
-      status: 'Completed',
-      dueDate: '2024-06-20',
-      priority: 'Low',
-      comments: ['This task is good']
-    },
-    {
-      id: 7,
-      name: 'Task 7',
-      assignedTo: 'User 7',
-      status: 'Not Started',
-      dueDate: '2024-07-01',
-      priority: 'Normal',
-      comments: ['This task is good']
-    }
+    // Sample task data
+    { id: 1, name: 'Task 1', assignedTo: 'User 1', status: 'Completed', dueDate: '2024-10-12', priority: 'Low', comments: ['This task is good'] },
+    { id: 2, name: 'Task 2', assignedTo: 'User 2', status: 'In Progress', dueDate: '2024-09-14', priority: 'High', comments: ['This task is good'] },
+    { id: 3, name: 'Task 3', assignedTo: 'User 3', status: 'Not Started', dueDate: '2024-08-18', priority: 'Low', comments: ['This task is good'] },
+    { id: 4, name: 'Task 4', assignedTo: 'User 4', status: 'In Progress', dueDate: '2024-06-12', priority: 'Normal', comments: ['This task is good'] },
+    { id: 5, name: 'Task 5', assignedTo: 'User 5', status: 'In Progress', dueDate: '2024-06-15', priority: 'High', comments: ['This task is good'] },
+    { id: 6, name: 'Task 6', assignedTo: 'User 6', status: 'Completed', dueDate: '2024-06-20', priority: 'Low', comments: ['This task is good'] },
+    { id: 7, name: 'Task 7', assignedTo: 'User 7', status: 'Not Started', dueDate: '2024-07-01', priority: 'Normal', comments: ['This task is good'] },
   ]);
-  
+
   const [deleteTaskId, setDeleteTaskId] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 4; // Number of items per page
+  const itemsPerPage = 4; 
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
@@ -100,13 +44,12 @@ const TaskList = () => {
   const totalPages = Math.ceil(tasks.length / itemsPerPage);
 
   return (
-    
     <div className="container-fluid mt-4">
-      <Navbar  totalPages={totalPages} ></Navbar>
+      <Navbar totalPages={totalPages} />
       {/* Task Table Section */}
       <div className="row mt-3">
-        <div className="col-lg-8">
-          <table className="table table-striped table-bordered">
+        <div className="col-lg-8 col-md-10 col-sm-12 mx-auto">
+          <table className="table table-striped table-bordered table-responsive">
             <thead>
               <tr>
                 <th><input type="checkbox" /></th>
